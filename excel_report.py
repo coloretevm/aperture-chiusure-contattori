@@ -104,7 +104,7 @@ def _write_events(sheet, result: AnalysisResult) -> None:
         "DATA E ORA CHIUSURA",
         "Contatore finale (m3)",
         "CONSUMO (m3)",
-        " ",
+        "SEPARATORE",
         "DURATA APERTURA",
         "Tipo apertura",
         "Affidabilita",

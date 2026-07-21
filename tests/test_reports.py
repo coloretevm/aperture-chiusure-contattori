@@ -101,3 +101,4 @@ def test_excel_event_table_has_no_empty_headers(tmp_path) -> None:
     sheet = workbook["APERTURE_E_CHIUSURE"]
 
     assert all(sheet.cell(5, column).value is not None for column in range(1, 16))
+    assert sheet.cell(5, 7).value == "SEPARATORE"

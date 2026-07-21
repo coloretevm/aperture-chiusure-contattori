@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2026-07-21 - Correzione definitiva avviso Excel
+
+- Sostituita l'intestazione separatrice composta da spazio con `SEPARATORE`.
+- La colonna resta stretta e visivamente usata come separatore tra `CONSUMO` e `DURATA APERTURA`.
+- Evitato l'avviso di ripristino contenuto di Microsoft Excel causato da intestazioni tabella non valide.
+
 ## 2026-07-21 - Icona barra applicazioni
 
 - Aggiunto un Windows AppUserModelID stabile per forzare la barra applicazioni a usare l'icona dell'app.
