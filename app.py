@@ -49,6 +49,7 @@ class CounterAnalysisApp:
         main = ttk.Frame(self.root, padding=20)
         main.pack(fill="both", expand=True)
         main.columnconfigure(1, weight=1)
+        main.rowconfigure(12, weight=1)
 
         title = ttk.Label(main, text="Analisi aperture e chiusure contatore", font=("Segoe UI", 18, "bold"))
         title.grid(row=0, column=0, columnspan=3, sticky="w", pady=(0, 18))
@@ -96,6 +97,13 @@ class CounterAnalysisApp:
         ttk.Button(self.result_frame, text="Apri Excel", command=lambda: self._open_path(self.excel_path)).grid(row=2, column=0, padx=(0, 8))
         ttk.Button(self.result_frame, text="Apri PDF", command=lambda: self._open_path(self.pdf_path)).grid(row=2, column=1, padx=(0, 8))
         ttk.Button(self.result_frame, text="Apri cartella", command=self._open_output_folder).grid(row=2, column=2)
+
+        ttk.Label(
+            main,
+            text="by Manuel Rodriguez",
+            font=("Segoe UI", 8),
+            foreground="#6B7280",
+        ).grid(row=12, column=0, columnspan=3, sticky="se", pady=(10, 0))
 
     def _build_advanced_fields(self) -> None:
         defaults = AnalysisConfig()
