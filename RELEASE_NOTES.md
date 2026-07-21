@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2026-07-21 - Icona barra applicazioni
+
+- Aggiunto un Windows AppUserModelID stabile per forzare la barra applicazioni a usare l'icona dell'app.
+- Generato un nuovo eseguibile `TecnidroAnalisiContatore.exe` per evitare la cache icone associata al vecchio nome `AnalisiContatore.exe`.
+- Aggiornato `build_windows.bat` con il nuovo nome dell'eseguibile.
+
 ## 2026-07-21 - Interfaccia nitida su Windows
 
 - Abilitata la modalita DPI-aware su Windows prima della creazione della finestra.

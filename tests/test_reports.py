@@ -4,7 +4,14 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from analyzer import analyze_readings
-from app import APP_ICON_NAME, APP_ICON_SOURCE_NAME, default_output_directory, enable_high_dpi_awareness, resource_path
+from app import (
+    APP_ICON_NAME,
+    APP_ICON_SOURCE_NAME,
+    default_output_directory,
+    enable_high_dpi_awareness,
+    resource_path,
+    set_windows_app_user_model_id,
+)
 from excel_report import create_excel_report
 from models import AnalysisConfig, CounterReading
 from openpyxl import load_workbook
@@ -48,6 +55,10 @@ def test_default_output_directory_prefers_desktop() -> None:
 
 def test_high_dpi_awareness_setup_is_callable() -> None:
     enable_high_dpi_awareness()
+
+
+def test_windows_app_user_model_id_setup_is_callable() -> None:
+    set_windows_app_user_model_id()
 
 
 def test_app_icon_resource_exists() -> None:

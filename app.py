@@ -23,6 +23,7 @@ from utils import setup_logging
 LOGGER = logging.getLogger(__name__)
 APP_ICON_NAME = "tecnidro_app_icon.ico"
 APP_ICON_SOURCE_NAME = "tecnidro_app_icon.png"
+APP_USER_MODEL_ID = "Tecnidro.AnalisiContatore"
 
 
 def enable_high_dpi_awareness() -> None:
@@ -44,6 +45,17 @@ def enable_high_dpi_awareness() -> None:
         windll.user32.SetProcessDPIAware()
     except Exception:
         LOGGER.exception("Unable to enable Windows DPI awareness")
+
+
+def set_windows_app_user_model_id() -> None:
+    """Set a stable Windows app id so taskbar icons use the bundled icon."""
+
+    if sys.platform != "win32":
+        return
+    try:
+        windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_USER_MODEL_ID)
+    except Exception:
+        LOGGER.exception("Unable to set Windows AppUserModelID")
 
 
 def resource_path(filename: str) -> Path:
@@ -353,6 +365,7 @@ def main() -> None:
     """Start the desktop application."""
 
     setup_logging()
+    set_windows_app_user_model_id()
     enable_high_dpi_awareness()
     root = Tk()
     configure_tk_scaling(root)
