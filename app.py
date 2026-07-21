@@ -21,6 +21,13 @@ from utils import setup_logging
 LOGGER = logging.getLogger(__name__)
 
 
+def default_output_directory() -> Path:
+    """Return the default output directory for generated reports."""
+
+    desktop = Path.home() / "Desktop"
+    return desktop if desktop.exists() else Path.home()
+
+
 class CounterAnalysisApp:
     """Main tkinter user interface."""
 
@@ -32,7 +39,7 @@ class CounterAnalysisApp:
 
         self.csv_path = StringVar()
         self.rtu_name = StringVar(value="CBG_0087")
-        self.output_dir = StringVar()
+        self.output_dir = StringVar(value=str(default_output_directory()))
         self.counter_column = StringVar()
         self.status_text = StringVar(value="Seleziona un file CSV.")
         self.include_original_pdf = BooleanVar(value=False)
@@ -147,7 +154,8 @@ class CounterAnalysisApp:
             return
         path = Path(selected)
         self.csv_path.set(str(path))
-        self.output_dir.set(str(path.parent))
+        if not self.output_dir.get().strip():
+            self.output_dir.set(str(default_output_directory()))
         try:
             preview = preview_csv(path)
             self._apply_preview(preview)
@@ -192,7 +200,7 @@ class CounterAnalysisApp:
             raise ValueError("Il nome GDC/RTU non puo essere vuoto.")
         if not self.counter_column.get().strip():
             raise ValueError("Seleziona la colonna del contatore.")
-        output_dir = Path(self.output_dir.get().strip() or csv_path.parent)
+        output_dir = Path(self.output_dir.get().strip() or default_output_directory())
         return csv_path, output_dir, self.rtu_name.get().strip(), self.counter_column.get().strip(), self._config_from_ui()
 
     def _start_processing(self) -> None:

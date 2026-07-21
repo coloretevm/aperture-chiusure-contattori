@@ -4,8 +4,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from analyzer import analyze_readings
+from app import default_output_directory
 from excel_report import create_excel_report
 from models import AnalysisConfig, CounterReading
+from openpyxl import load_workbook
 from pdf_report import create_pdf_report
 
 
@@ -32,3 +34,35 @@ def test_excel_and_pdf_reports_are_created(tmp_path) -> None:
     assert pdf_path.exists()
     assert excel_path.suffix == ".xlsx"
     assert pdf_path.suffix == ".pdf"
+
+
+def test_default_output_directory_prefers_desktop() -> None:
+    desktop = Path.home() / "Desktop"
+    expected = desktop if desktop.exists() else Path.home()
+
+    output_dir = default_output_directory()
+
+    assert output_dir == expected
+
+
+def test_excel_event_table_has_no_empty_headers(tmp_path) -> None:
+    start = datetime(2026, 6, 10, 17, 7, 57, 636000)
+    end = datetime(2026, 6, 10, 20, 32, 45, 584000)
+    readings = [
+        CounterReading(2, start, 0.3),
+        CounterReading(3, end, 3.2),
+        CounterReading(4, end + timedelta(minutes=95), 3.2),
+    ]
+    result = analyze_readings(
+        readings,
+        AnalysisConfig(),
+        Path("known.csv"),
+        "CBG_0087",
+        "CBG_0087 - V1Counter",
+    )
+
+    excel_path = create_excel_report(result, tmp_path)
+    workbook = load_workbook(excel_path)
+    sheet = workbook["APERTURE_E_CHIUSURE"]
+
+    assert all(sheet.cell(5, column).value is not None for column in range(1, 16))

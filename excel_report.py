@@ -104,7 +104,7 @@ def _write_events(sheet, result: AnalysisResult) -> None:
         "DATA E ORA CHIUSURA",
         "Contatore finale (m3)",
         "CONSUMO (m3)",
-        "",
+        " ",
         "DURATA APERTURA",
         "Tipo apertura",
         "Affidabilita",
@@ -160,6 +160,7 @@ def _write_events(sheet, result: AnalysisResult) -> None:
     sheet.freeze_panes = "A6"
     _autosize(sheet)
     sheet.column_dimensions["G"].width = 4
+    sheet.cell(header_row, 7).font = Font(color="1F4E78", bold=True)
 
 
 def _write_isolated(sheet, result: AnalysisResult) -> None:
