@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import queue
+import sys
 import threading
 import traceback
 from pathlib import Path
@@ -19,6 +20,27 @@ from pdf_report import create_pdf_report
 from utils import setup_logging
 
 LOGGER = logging.getLogger(__name__)
+APP_ICON_NAME = "tecnidro_app_icon.ico"
+
+
+def resource_path(filename: str) -> Path:
+    """Return a path that works both from source and from a PyInstaller bundle."""
+
+    base_path = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+    return base_path / filename
+
+
+def apply_window_icon(root: Tk) -> None:
+    """Apply the application icon to the tkinter window when available."""
+
+    icon_path = resource_path(APP_ICON_NAME)
+    if not icon_path.exists():
+        LOGGER.warning("Application icon not found: %s", icon_path)
+        return
+    try:
+        root.iconbitmap(default=str(icon_path))
+    except Exception:
+        LOGGER.exception("Unable to apply application icon: %s", icon_path)
 
 
 def default_output_directory() -> Path:
@@ -300,6 +322,7 @@ def main() -> None:
 
     setup_logging()
     root = Tk()
+    apply_window_icon(root)
     CounterAnalysisApp(root)
     root.mainloop()
 

@@ -1,5 +1,11 @@
 # Release Notes
 
+## 2026-07-21 - Icona Tecnidro
+
+- Aggiunta `tecnidro_app_icon.ico` come icona dell'eseguibile Windows.
+- Applicata la stessa icona anche alla finestra principale dell'app.
+- Aggiornato `build_windows.bat` per includere automaticamente icona e risorsa nel bundle PyInstaller.
+
 ## 2026-07-21 - Compatibilita Excel
 
 - Corretto l'avviso di ripristino contenuto mostrato da Microsoft Excel.

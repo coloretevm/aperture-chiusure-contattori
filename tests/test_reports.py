@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from analyzer import analyze_readings
-from app import default_output_directory
+from app import APP_ICON_NAME, default_output_directory, resource_path
 from excel_report import create_excel_report
 from models import AnalysisConfig, CounterReading
 from openpyxl import load_workbook
@@ -43,6 +43,10 @@ def test_default_output_directory_prefers_desktop() -> None:
     output_dir = default_output_directory()
 
     assert output_dir == expected
+
+
+def test_app_icon_resource_exists() -> None:
+    assert resource_path(APP_ICON_NAME).exists()
 
 
 def test_excel_event_table_has_no_empty_headers(tmp_path) -> None:
