@@ -4,10 +4,11 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from analyzer import analyze_readings
-from app import APP_ICON_NAME, default_output_directory, resource_path
+from app import APP_ICON_NAME, APP_ICON_SOURCE_NAME, default_output_directory, enable_high_dpi_awareness, resource_path
 from excel_report import create_excel_report
 from models import AnalysisConfig, CounterReading
 from openpyxl import load_workbook
+from PIL import Image
 from pdf_report import create_pdf_report
 
 
@@ -45,8 +46,27 @@ def test_default_output_directory_prefers_desktop() -> None:
     assert output_dir == expected
 
 
+def test_high_dpi_awareness_setup_is_callable() -> None:
+    enable_high_dpi_awareness()
+
+
 def test_app_icon_resource_exists() -> None:
     assert resource_path(APP_ICON_NAME).exists()
+
+
+def test_app_icon_png_source_exists() -> None:
+    source = resource_path(APP_ICON_SOURCE_NAME)
+    image = Image.open(source)
+
+    assert source.exists()
+    assert image.size == (256, 256)
+    assert image.mode == "RGBA"
+
+
+def test_app_icon_contains_taskbar_sizes() -> None:
+    icon = Image.open(resource_path(APP_ICON_NAME))
+
+    assert {(256, 256), (128, 128), (64, 64), (48, 48), (32, 32), (24, 24), (16, 16)}.issubset(icon.ico.sizes())
 
 
 def test_excel_event_table_has_no_empty_headers(tmp_path) -> None:

@@ -1,5 +1,18 @@
 # Release Notes
 
+## 2026-07-21 - Interfaccia nitida su Windows
+
+- Abilitata la modalita DPI-aware su Windows prima della creazione della finestra.
+- Sincronizzato lo scaling di Tk con il DPI reale del monitor.
+- Ridotto l'effetto sfocato dell'interfaccia quando Windows usa scaling 125%, 150% o superiore.
+
+## 2026-07-21 - Icona piu nitida
+
+- Usata `tecnidro_app_icon.png` come fonte ad alta qualita per rigenerare l'icona.
+- Rigenerata `tecnidro_app_icon.ico` come icona multi-risoluzione.
+- Aggiunti i formati interni `256`, `128`, `64`, `48`, `32`, `24` e `16` pixel per ridurre l'effetto sfocato in Windows.
+- Aggiunto un test automatico per verificare i formati interni dell'icona.
+
 ## 2026-07-21 - Icona Tecnidro
 
 - Aggiunta `tecnidro_app_icon.ico` come icona dell'eseguibile Windows.

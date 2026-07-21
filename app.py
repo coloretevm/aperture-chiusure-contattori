@@ -8,6 +8,7 @@ import queue
 import sys
 import threading
 import traceback
+from ctypes import windll
 from pathlib import Path
 from tkinter import BooleanVar, StringVar, Tk, filedialog, messagebox
 from tkinter import ttk
@@ -21,6 +22,28 @@ from utils import setup_logging
 
 LOGGER = logging.getLogger(__name__)
 APP_ICON_NAME = "tecnidro_app_icon.ico"
+APP_ICON_SOURCE_NAME = "tecnidro_app_icon.png"
+
+
+def enable_high_dpi_awareness() -> None:
+    """Ask Windows to render the application without bitmap scaling blur."""
+
+    if sys.platform != "win32":
+        return
+    try:
+        windll.user32.SetProcessDpiAwarenessContext(-4)
+        return
+    except Exception:
+        LOGGER.debug("Per-monitor v2 DPI awareness not available", exc_info=True)
+    try:
+        windll.shcore.SetProcessDpiAwareness(2)
+        return
+    except Exception:
+        LOGGER.debug("Per-monitor DPI awareness not available", exc_info=True)
+    try:
+        windll.user32.SetProcessDPIAware()
+    except Exception:
+        LOGGER.exception("Unable to enable Windows DPI awareness")
 
 
 def resource_path(filename: str) -> Path:
@@ -41,6 +64,15 @@ def apply_window_icon(root: Tk) -> None:
         root.iconbitmap(default=str(icon_path))
     except Exception:
         LOGGER.exception("Unable to apply application icon: %s", icon_path)
+
+
+def configure_tk_scaling(root: Tk) -> None:
+    """Synchronize Tk scaling with the current display DPI."""
+
+    try:
+        root.tk.call("tk", "scaling", root.winfo_fpixels("1i") / 72.0)
+    except Exception:
+        LOGGER.exception("Unable to configure Tk DPI scaling")
 
 
 def default_output_directory() -> Path:
@@ -321,7 +353,9 @@ def main() -> None:
     """Start the desktop application."""
 
     setup_logging()
+    enable_high_dpi_awareness()
     root = Tk()
+    configure_tk_scaling(root)
     apply_window_icon(root)
     CounterAnalysisApp(root)
     root.mainloop()
